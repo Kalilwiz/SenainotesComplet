@@ -13,6 +13,8 @@ builder.Services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 
+builder.Services.AddTransient<INotaRepository, NotaRepository>();
+
 // Adicionando cors para permitir que o back converse com o front
 builder.Services.AddCors(
 
