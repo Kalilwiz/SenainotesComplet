@@ -11,6 +11,8 @@ builder.Services.AddDbContext<SenaiNotesContext, SenaiNotesContext>();
 
 builder.Services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 
+builder.Services.AddTransient<ITagRepository, TagRepository>();
+
 // Adicionando cors para permitir que o back converse com o front
 builder.Services.AddCors(
 

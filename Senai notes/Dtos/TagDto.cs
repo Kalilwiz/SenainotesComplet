@@ -2,5 +2,6 @@
 {
     public class TagDto
     {
+        public string Nome { get; set; } = null!;
     }
 }
