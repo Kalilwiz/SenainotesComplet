@@ -8,6 +8,8 @@ namespace Senai_notes.Interfaces
         // R - Read (Leitura)
         List<Usuario> ListarTodos();    // cria um metodo do tipo List com o tipo usuario de nome ListarTodos
 
+        Usuario BuscarPorEmailSenha(string email, string senha);
+
         Usuario BuscarPorId(int id);    // Tras o id de cada usuario
 
         //  C - Create (cadastro)

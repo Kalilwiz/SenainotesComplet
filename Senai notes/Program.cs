@@ -43,7 +43,7 @@ var app = builder.Build();
 
 app.UseCors("MinhasOrigens");
 
-app.MapControllers();
+app.MapControllers();  
 
 
 app.UseSwagger();

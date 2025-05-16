@@ -33,6 +33,27 @@ namespace Senai_notes.Repositories
 
         }
 
+        public Usuario? BuscarPorEmailSenha(string email, string senha)
+        {
+            Usuario UsuarioEncontrado = _context.Usuarios.FirstOrDefault(c => c.Email == email);
+
+            if (UsuarioEncontrado == null)
+            {
+                return null;
+            }
+
+            var passowordService = new PasswordService();
+
+            var resultado = passowordService.VerificarSenha(UsuarioEncontrado, senha);
+
+            if (resultado == true)
+            {
+                return UsuarioEncontrado;
+            }
+
+            return null;
+        }
+
         public Usuario BuscarPorId(int id)
         {
             return _context.Usuarios.FirstOrDefault(p => p.UserId == id);
@@ -52,6 +73,7 @@ namespace Senai_notes.Repositories
 
             _context.SaveChanges();
         }
+
 
         public void Deletar(int id)
         {
