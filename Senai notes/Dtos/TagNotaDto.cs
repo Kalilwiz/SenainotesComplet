@@ -2,5 +2,8 @@
 {
     public class TagNotaDto
     {
+        public int? NotaId { get; set; }
+
+        public int? TagId { get; set; }
     }
 }
