@@ -6,7 +6,7 @@ namespace Senai_notes.Interfaces
     public interface IUsuarioRepository
     {
         // R - Read (Leitura)
-        List<Usuario> ListarTodos();    // cria um metodo do tipo List com o tipo usuario de nome ListarTodos
+        List<Usuarioviewmodel> ListarTodos();    // cria um metodo do tipo List com o tipo usuario de nome ListarTodos
 
         Usuario BuscarPorEmailSenha(string email, string senha);
 

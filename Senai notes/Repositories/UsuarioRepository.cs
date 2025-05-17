@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Senai_notes.Context;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
 using Senai_notes.Models;
+using Senai_notes.Services;
 
 namespace Senai_notes.Repositories
 {
@@ -94,9 +96,15 @@ namespace Senai_notes.Repositories
         }
 
         // cria um metodo listar todos do tipo LIST usando a classe produto e procura usando o metodo tolist que tras uma lista com tudo que ta dentro de produto
-        public List<Usuario> ListarTodos()
+        public List<Usuarioviewmodel> ListarTodos()
         {
-            return _context.Usuarios.ToList();
+            return _context.Usuarios.Select(u => new Usuarioviewmodel 
+            {
+                Nome = u.Nome,
+                UserId = u.UserId,
+                Email = u.Email,
+                DataCriacao = u.DataCriacao,
+            }).ToList();
         }
     }
 }

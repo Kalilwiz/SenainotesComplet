@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
 using Senai_notes.Models;
+using Senai_notes.Services;
 
 namespace Senai_notes.Controller
 {
@@ -24,6 +25,24 @@ namespace Senai_notes.Controller
         {
             // chamando o metodo da sua interface e exibindo com o ok(codigo 200)
             return Ok(_usuarioRepository.ListarTodos());
+        }
+
+        [HttpPost("login")]
+
+        public IActionResult Login(LoginDto login)
+        {
+            var cliente = _usuarioRepository.BuscarPorEmailSenha(login.Email, login.Senha);
+
+            if (cliente == null)
+            {
+                return Unauthorized("HAHAHAHAHAHAH ERROU");
+            }
+
+            var tokenservice = new TokenService();
+
+            var token = tokenservice.GenerateToken(cliente.Email);
+
+            return Ok(token);
         }
 
         // metodo posto usado para Cadastrar seus usuarios
