@@ -1,3 +1,5 @@
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using Senai_notes.Context;
 using Senai_notes.Interfaces;
 using Senai_notes.Repositories;
@@ -39,12 +41,28 @@ builder.Services.AddCors(
 
     });
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "senaiNotes",
+            ValidAudience = "senaiNotes",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("minha-chave-ultra-mega-secreta-senai"))
+        };
+    });
+
+builder.Services.AddAuthentication();
+
 var app = builder.Build();
 
 app.UseCors("MinhasOrigens");
 
 app.MapControllers();  
-
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -53,5 +71,9 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
 });
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
