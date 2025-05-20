@@ -1,4 +1,5 @@
-﻿using Senai_notes.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Senai_notes.Context;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
 using Senai_notes.Models;
@@ -68,12 +69,12 @@ namespace Senai_notes.Repositories
 
             // manda para o contexto e salva
             _context.Notas.Remove(NotaEncontrada);
-            _context.SaveChanges();
+            _context.SaveChanges(); 
         }
 
-        public List<Nota> ListarTodos()
+        public List<Nota> ListarTodos(int id)
         {
-            return _context.Notas.ToList();
+            return _context.Notas.Include(t => t.TagNota).Where(p => p.UserId == id).ToList();
         }
     }
 }

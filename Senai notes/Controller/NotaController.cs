@@ -20,10 +20,10 @@ namespace Senai_notes.Controller
         [HttpGet]
 
         // criando o metodo listar usando o metodo iactionresult para trazer seu resultado e o codigo para retornar ao navegador
-        public IActionResult ListarUsuarios()
+        public IActionResult ListarUsuarios(int id)
         {
             // chamando o metodo da sua interface e exibindo com o ok(codigo 200)
-            return Ok(_notaRepository.ListarTodos());
+            return Ok(_notaRepository.ListarTodos(id));
         }
 
         // metodo posto usado para Cadastrar seus usuarios
