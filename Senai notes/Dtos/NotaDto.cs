@@ -13,5 +13,7 @@
         public bool Arquivado { get; set; }
 
         public string? Imagem { get; set; }
+
+        public int? UserId { get; set; }
     }
 }

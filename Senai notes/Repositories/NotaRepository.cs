@@ -50,6 +50,7 @@ namespace Senai_notes.Repositories
                 DataCriacao = dto.DataCriacao,
                 Arquivado = dto.Arquivado,
                 Imagem = dto.Imagem,
+                UserId = dto.UserId
             };
 
             _context.Notas.Add(nota);
@@ -72,9 +73,19 @@ namespace Senai_notes.Repositories
             _context.SaveChanges(); 
         }
 
+        public List<Nota> ListarTodasAsNotasPorUsuario(int id)
+        {
+            return _context.Notas.Include(t => t.TagNota).Where(p => p.UserId == id).ToList();
+        }
+
         public List<Nota> ListarTodos(int id)
         {
             return _context.Notas.Include(t => t.TagNota).Where(p => p.UserId == id).ToList();
+        }
+
+        public List<Nota> ListarTodos()
+        {
+            return _context.Notas.Include(p => p.TagNota).ToList();
         }
     }
 }

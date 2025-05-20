@@ -17,14 +17,30 @@ namespace Senai_notes.Controller
             _notaRepository = notaRepository;
         }
 
+        [HttpGet("{id}")]
+
+       
+        public IActionResult ListarUsuarios(int id)
+        {
+            Nota nota = _notaRepository.BuscarPorId(id);
+
+            if (nota == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_notaRepository.ListarTodasAsNotasPorUsuario(id));
+        }
+
         [HttpGet]
 
         // criando o metodo listar usando o metodo iactionresult para trazer seu resultado e o codigo para retornar ao navegador
-        public IActionResult ListarUsuarios(int id)
+        public IActionResult ListarTodos()
         {
             // chamando o metodo da sua interface e exibindo com o ok(codigo 200)
-            return Ok(_notaRepository.ListarTodos(id));
+            return Ok(_notaRepository.ListarTodos());
         }
+
 
         // metodo posto usado para Cadastrar seus usuarios
         [HttpPost]
@@ -37,26 +53,7 @@ namespace Senai_notes.Controller
             // retornando ok
             return Created();
         }
-
-        [HttpGet("{id}")]
-
-        // criando o metodod listarporid com iactionresult com o argumento id
-        public IActionResult ListarPorID(int id)
-        {
-            // criando a variavel produto do tipo produto para buscar o id informado e trazer as informacoes localizadas
-            Nota nota = _notaRepository.BuscarPorId(id);
-
-            // verificando se for nulo
-            if (nota == null)
-            {
-                return NotFound();
-            }
-
-
-            // trazendo o resultado e o codigo 
-            return Ok(nota);
-        }
-
+       
         // criando metodo put para atualizar algo criado usando um endpoint
         [HttpPut("{id}")]
 
