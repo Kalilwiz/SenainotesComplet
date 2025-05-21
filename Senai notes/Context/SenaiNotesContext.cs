@@ -16,8 +16,6 @@ public partial class SenaiNotesContext : DbContext
     {
     }
 
-    public virtual DbSet<AuditoriaGeral> AuditoriaGerals { get; set; }
-
     public virtual DbSet<Nota> Notas { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -32,25 +30,6 @@ public partial class SenaiNotesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<AuditoriaGeral>(entity =>
-        {
-            entity.HasKey(e => e.AuditoriaId).HasName("PK__Auditori__095694E3C579070E");
-
-            entity.ToTable("AuditoriaGeral");
-
-            entity.Property(e => e.AuditoriaId).HasColumnName("AuditoriaID");
-            entity.Property(e => e.DataAcao).HasColumnType("datetime");
-            entity.Property(e => e.NomeTabela)
-                .HasMaxLength(30)
-                .IsUnicode(false);
-            entity.Property(e => e.TipoAcao)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.Usuario)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-        });
-
         modelBuilder.Entity<Nota>(entity =>
         {
             entity.HasKey(e => e.NotaId).HasName("PK__Notas__EF36CC7AAFCCC42B");
@@ -117,7 +96,7 @@ public partial class SenaiNotesContext : DbContext
                 .HasMaxLength(200)
                 .IsUnicode(false);
             entity.Property(e => e.Senha)
-                .HasMaxLength(10)
+                .HasMaxLength(255)
                 .IsUnicode(false);
         });
 

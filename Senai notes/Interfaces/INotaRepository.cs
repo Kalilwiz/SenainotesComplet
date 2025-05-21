@@ -6,10 +6,9 @@ namespace Senai_notes.Interfaces
     public interface INotaRepository
     {
         // R - Read (Leitura)
-        List<Nota> ListarTodasAsNotasPorUsuario(int id);    // cria um metodo do tipo List com o tipo nota de nome ListarTodos
+        List<Notaviewmodel> ListarTodasAsNotasPorUsuario(int id);    // cria um metodo do tipo List com o tipo nota de nome ListarTodos
 
         List<Nota> ListarTodos();
-        Nota BuscarPorId(int id);    // Tras o id de cada nota
 
         //  C - Create (cadastro)
         void Cadastrar(NotaDto nota);    // Cria o metodo cadastrar do tipo nota com o nome nota

@@ -56,6 +56,15 @@ namespace Senai_notes.Repositories
             _context.Notas.Add(nota);
 
             _context.SaveChanges();
+
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    var tagnota = new TagNota 
+            //    {
+            //        NotaId = nota.NotaId,
+            //        TagId = 
+            //    };
+            //}
         }
 
         public void Deletar(int id)
@@ -73,19 +82,28 @@ namespace Senai_notes.Repositories
             _context.SaveChanges(); 
         }
 
-        public List<Nota> ListarTodasAsNotasPorUsuario(int id)
+        public List<Notaviewmodel> ListarTodasAsNotasPorUsuario(int id)
         {
-            return _context.Notas.Include(t => t.TagNota).Where(p => p.UserId == id).ToList();
-        }
-
-        public List<Nota> ListarTodos(int id)
-        {
-            return _context.Notas.Include(t => t.TagNota).Where(p => p.UserId == id).ToList();
+            return _context.Notas.Include(t => t.TagNota).ThenInclude(ta => ta.Tag).Where(p => p.UserId == id).Select(t => new Notaviewmodel
+            { 
+                NotaId = t.NotaId,
+                Titulo = t.Titulo,
+                Texto = t.Texto,
+                DataCriacao = t.DataCriacao,
+                DataAlteracao = t.DataAlteracao,
+                Arquivado = t.Arquivado,
+                Imagem = t.Imagem,
+                tags = t.TagNota.Select(ta => new TagDto 
+                { 
+                    TagId = ta.Tag.TagId,
+                    Nome = ta.Tag.Nome
+                }).ToList(),
+            }).ToList();
         }
 
         public List<Nota> ListarTodos()
         {
-            return _context.Notas.Include(p => p.TagNota).ToList();
+            return _context.Notas.Include(p => p.TagNota).ThenInclude(t => t.Tag).ToList();
         }
-    }
+    }   
 }

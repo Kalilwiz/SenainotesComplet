@@ -5,7 +5,11 @@ using Senai_notes.Interfaces;
 using Senai_notes.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+
+builder.Services.AddControllers().AddNewtonsoftJson(options => 
+{ 
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 
 builder.Services.AddSwaggerGen();
 

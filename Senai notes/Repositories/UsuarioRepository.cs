@@ -71,6 +71,10 @@ namespace Senai_notes.Repositories
                 DataCriacao = dto.DataCriacao,
             };
 
+            var passowrodService = new PasswordService();
+
+            usuario.Senha = passowrodService.HashPasswprd(usuario);
+
             _context.Usuarios.Add(usuario);
 
             _context.SaveChanges();
@@ -104,6 +108,7 @@ namespace Senai_notes.Repositories
                 UserId = u.UserId,
                 Email = u.Email,
                 DataCriacao = u.DataCriacao,
+                Senha = u.Senha,
             }).ToList();
         }
     }

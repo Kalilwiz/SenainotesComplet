@@ -24,4 +24,6 @@ public partial class Nota
     public virtual ICollection<TagNota> TagNota { get; set; } = new List<TagNota>();
 
     public virtual Usuario? User { get; set; }
+
+    public List<Tag> tags { get; set; }
 }

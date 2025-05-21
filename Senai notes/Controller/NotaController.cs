@@ -22,7 +22,7 @@ namespace Senai_notes.Controller
        
         public IActionResult ListarUsuarios(int id)
         {
-            Nota nota = _notaRepository.BuscarPorId(id);
+            List<Notaviewmodel> nota = _notaRepository.ListarTodasAsNotasPorUsuario(id);
 
             if (nota == null)
             {
