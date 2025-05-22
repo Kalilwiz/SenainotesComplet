@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Senai_notes.Models;
@@ -16,6 +17,8 @@ public partial class SenaiNotesContext : DbContext
     {
     }
 
+    public virtual DbSet<AuditoriaGeral> AuditoriaGerals { get; set; }
+
     public virtual DbSet<Nota> Notas { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -30,11 +33,28 @@ public partial class SenaiNotesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AuditoriaGeral>(entity =>
+        {
+            entity.HasKey(e => e.AuditoriaId).HasName("PK__Auditori__095694E3C579070E");
+
+            entity.ToTable("AuditoriaGeral");
+
+            entity.Property(e => e.AuditoriaId).HasColumnName("AuditoriaID");
+            entity.Property(e => e.DataAcao).HasColumnType("datetime");
+            entity.Property(e => e.NomeTabela)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.TipoAcao)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Usuario)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Nota>(entity =>
         {
-            entity.HasKey(e => e.NotaId).HasName("PK__Notas__EF36CC7AAFCCC42B");
-
-            entity.ToTable(tb => tb.HasTrigger("trg_Audit_Notas"));
+            entity.HasKey(e => e.NotaId).HasName("PK__Notas__EF36CC7AFEB90979");
 
             entity.Property(e => e.NotaId).HasColumnName("NotaID");
             entity.Property(e => e.DataAlteracao).HasColumnType("datetime");
@@ -42,6 +62,7 @@ public partial class SenaiNotesContext : DbContext
             entity.Property(e => e.Imagem)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.Property(e => e.Texto).HasColumnType("text");
             entity.Property(e => e.Titulo)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -49,24 +70,29 @@ public partial class SenaiNotesContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Nota)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Notas__UserID__5EBF139D");
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Notas_Usuarios");
         });
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.TagId).HasName("PK__Tags__657CFA4CF816F55B");
-
-            entity.ToTable(tb => tb.HasTrigger("trg_Audit_Tags"));
+            entity.HasKey(e => e.TagId).HasName("PK__Tags__657CFA4CCDE2558A");
 
             entity.Property(e => e.TagId).HasColumnName("TagID");
             entity.Property(e => e.Nome)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Tags)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Tags_Usuarios");
         });
 
         modelBuilder.Entity<TagNota>(entity =>
         {
-            entity.HasKey(e => e.TagNotaId).HasName("PK__TagNotas__C194BF2D77D2E370");
+            entity.HasKey(e => e.TagNotaId).HasName("PK__TagNotas__C194BF2DA00B53F3");
 
             entity.Property(e => e.TagNotaId).HasColumnName("TagNotaID");
             entity.Property(e => e.NotaId).HasColumnName("NotaID");
@@ -74,18 +100,16 @@ public partial class SenaiNotesContext : DbContext
 
             entity.HasOne(d => d.Nota).WithMany(p => p.TagNota)
                 .HasForeignKey(d => d.NotaId)
-                .HasConstraintName("FK__TagNotas__NotaID__6383C8BA");
+                .HasConstraintName("FK__TagNotas__NotaID__56E8E7AB");
 
             entity.HasOne(d => d.Tag).WithMany(p => p.TagNota)
                 .HasForeignKey(d => d.TagId)
-                .HasConstraintName("FK__TagNotas__TagID__6477ECF3");
+                .HasConstraintName("FK__TagNotas__TagID__57DD0BE4");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Usuarios__1788CCACF0F113C0");
-
-            entity.ToTable(tb => tb.HasTrigger("trg_Audit_User"));
+            entity.HasKey(e => e.UserId).HasName("PK__Usuarios__1788CCAC3C77FAB3");
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.DataCriacao).HasColumnType("datetime");

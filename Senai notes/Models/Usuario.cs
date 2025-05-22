@@ -11,9 +11,11 @@ public partial class Usuario
 
     public string Email { get; set; } = null!;
 
-    public string Senha { get; set; } = null!;
+    public string? Senha { get; set; }
 
     public DateTime? DataCriacao { get; set; }
 
     public virtual ICollection<Nota> Nota { get; set; } = new List<Nota>();
+
+    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 }

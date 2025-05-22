@@ -14,6 +14,4 @@ public partial class TagNota
     public virtual Nota? Nota { get; set; }
 
     public virtual Tag? Tag { get; set; }
-
-    public virtual Usuario? User { get; set; }
 }
