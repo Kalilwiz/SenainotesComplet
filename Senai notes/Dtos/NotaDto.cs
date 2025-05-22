@@ -14,6 +14,8 @@
 
         public string? Imagem { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
+
+        public List<string> Tags { get; set; }
     }
 }

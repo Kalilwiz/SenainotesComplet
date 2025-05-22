@@ -71,7 +71,7 @@ namespace Senai_notes.Controller
 
         public IActionResult ListarPorId(int id)
         {
-            var tag = _tagRepository.BuscarPorId(id);
+            var tag = _tagRepository.ListarTagsDoUsuario(id);
 
             if (tag == null) return NotFound();
 

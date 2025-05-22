@@ -8,10 +8,10 @@ namespace Senai_notes.Interfaces
         // R - Read (Leitura)
         List<Notaviewmodel> ListarTodasAsNotasPorUsuario(int id);    // cria um metodo do tipo List com o tipo nota de nome ListarTodos
 
-        List<Nota> ListarTodos();
+        List<Notaviewmodel> ListarTodos();
 
         //  C - Create (cadastro)
-        void Cadastrar(NotaDto nota);    // Cria o metodo cadastrar do tipo nota com o nome nota
+        NotaDto Cadastrar(NotaDto nota);    // Cria o metodo cadastrar do tipo nota com o nome nota
 
         //  U - Update (atualizacao)
 
@@ -20,6 +20,8 @@ namespace Senai_notes.Interfaces
         //  D - Delete(Apagar)
 
         void Deletar(int id);
+
+        Nota? ArquivarNota(int id);
 
     }
 }

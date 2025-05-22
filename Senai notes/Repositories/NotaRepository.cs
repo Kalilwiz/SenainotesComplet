@@ -10,9 +10,30 @@ namespace Senai_notes.Repositories
     {
         private readonly SenaiNotesContext _context;
 
-        public NotaRepository(SenaiNotesContext context)
+        private readonly ITagRepository _tagRepository;
+
+
+        public NotaRepository(SenaiNotesContext context, ITagRepository tagRepository)
         {
+            _tagRepository = tagRepository;
             _context = context;
+        }
+
+       
+        public Nota? ArquivarNota(int id)
+        {
+            var nota = _context.Notas.Find(id);
+
+            if (nota == null)
+            {
+                return null;
+            }
+
+            nota.Arquivado = !nota.Arquivado;
+
+            _context.SaveChanges();
+
+            return nota;
         }
 
         public void Atualizar(int id, NotaDto nota)
@@ -35,13 +56,22 @@ namespace Senai_notes.Repositories
 
         }
 
-        public Nota BuscarPorId(int id)
+        public NotaDto? Cadastrar(NotaDto dto)
         {
-            return _context.Notas.FirstOrDefault(p => p.NotaId == id);
-        }
 
-        public void Cadastrar(NotaDto dto)
-        {
+            List<int> IdTags = new List<int>();
+
+            foreach (var item in dto.Tags)
+            {
+                var tag = _tagRepository.BuscarTagPorIDeNome(dto.UserId, item);
+
+                if (tag == null) 
+                {
+                    
+                }
+
+                IdTags.Add(tag.TagId);
+            }
             Nota nota = new Nota
             {
                 Titulo = dto.Titulo,
@@ -53,9 +83,14 @@ namespace Senai_notes.Repositories
                 UserId = dto.UserId
             };
 
+            
+            return null;
+
             _context.Notas.Add(nota);
 
             _context.SaveChanges();
+
+            
 
             //for (int i = 0; i < 1; i++)
             //{
@@ -101,9 +136,24 @@ namespace Senai_notes.Repositories
             }).ToList();
         }
 
-        public List<Nota> ListarTodos()
+        public List<Notaviewmodel> ListarTodos()
         {
-            return _context.Notas.Include(p => p.TagNota).ThenInclude(t => t.Tag).ToList();
+            return _context.Notas.Include(t => t.TagNota).ThenInclude(ta => ta.Tag).Select(t => new Notaviewmodel
+            {
+                NotaId = t.NotaId,
+                Titulo = t.Titulo,
+                Texto = t.Texto,
+                DataCriacao = t.DataCriacao,
+                DataAlteracao = t.DataAlteracao,
+                Arquivado = t.Arquivado,
+                Imagem = t.Imagem,
+                tags = t.TagNota.Select(ta => new TagDto
+                {
+                    TagId = ta.Tag.TagId,
+                    Nome = ta.Tag.Nome
+                }).ToList(),
+            }).ToList();
         }
+
     }   
 }

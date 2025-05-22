@@ -1,4 +1,5 @@
-﻿using Senai_notes.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Senai_notes.Context;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
 using Senai_notes.Models;
@@ -28,10 +29,6 @@ namespace Senai_notes.Repositories
             _context.SaveChanges();
         }
 
-        public Tag BuscarPorId(int id)
-        {
-            return _context.Tags.FirstOrDefault(t => t.TagId == id);
-        }
 
         public void Cadastrar(TagDto dto)
         {
@@ -60,9 +57,31 @@ namespace Senai_notes.Repositories
             _context.SaveChanges();
         }
 
-        public List<Tag> ListarTodos()
+        public List<TagDto> ListarTodos()
         {
-            return _context.Tags.ToList();
+            return _context.Tags.Include(t => t.TagNota).Select(t => new TagDto 
+            { 
+                TagId = t.TagId,
+                Nome = t.Nome
+
+            }).ToList();
+        }
+
+        public List<TagDto> ListarTagsDoUsuario(int id)
+        {
+            return _context.Tags.Include(t => t.TagNota).Where(u => u.UserId == id).Select(t => new TagDto
+            {
+                TagId = t.TagId,
+                Nome = t.Nome
+
+            }).ToList();
+        }
+
+        public Tag BuscarTagPorIDeNome(int id, string nome)
+        {
+            var tags = _context.Tags.FirstOrDefault(t => t.UserId == id && t.Nome == nome);
+
+            return tags;
         }
     }
 }
