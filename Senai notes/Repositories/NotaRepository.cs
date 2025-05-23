@@ -54,6 +54,11 @@ namespace Senai_notes.Repositories
 
         }
 
+        public List<Notaviewmodel> BuscarNotaPorTitulo()
+        {
+            throw new NotImplementedException();
+        }
+
         public NotaDto? Cadastrar(NotaDto dto)
         {
 
@@ -110,7 +115,9 @@ namespace Senai_notes.Repositories
                     NotaId = novaNota.NotaId,
                     TagId = id
                 };
-                
+
+                _context.Add(tagNota);
+                _context.SaveChanges();
             }
 
             return dto;

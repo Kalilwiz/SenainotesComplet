@@ -8,6 +8,8 @@ namespace Senai_notes.Interfaces
         // R - Read (Leitura)
         List<Notaviewmodel> ListarTodasAsNotasPorUsuario(int id);    // cria um metodo do tipo List com o tipo nota de nome ListarTodos
 
+        List<Notaviewmodel> BuscarNotaPorTitulo();
+
         List<Notaviewmodel> ListarTodos();
 
         //  C - Create (cadastro)
