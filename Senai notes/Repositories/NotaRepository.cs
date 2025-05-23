@@ -47,9 +47,7 @@ namespace Senai_notes.Repositories
 
             NotaEncontrada.Titulo = nota.Titulo;
             NotaEncontrada.Texto = nota.Texto;
-            NotaEncontrada.DataCriacao = nota.DataCriacao;
-            NotaEncontrada.DataAlteracao = nota.DataAlteracao;
-            NotaEncontrada.Arquivado = nota.Arquivado;
+            NotaEncontrada.DataAlteracao = DateTime.Now;
             NotaEncontrada.Imagem = nota.Imagem;
 
             _context.SaveChanges();
@@ -59,47 +57,63 @@ namespace Senai_notes.Repositories
         public NotaDto? Cadastrar(NotaDto dto)
         {
 
+            //  crio uma lista paga armazenar id de tags que vierem do metodo
             List<int> IdTags = new List<int>();
 
+            // itero a lista de tags que o front mandar
             foreach (var item in dto.Tags)
             {
+                //  crio uma variavel para armazenar o que vem de dentro do metodo - guarda o id do usuario e a tag
                 var tag = _tagRepository.BuscarTagPorIDeNome(dto.UserId, item);
 
+                //  verifico se a tag nao existe
                 if (tag == null) 
                 {
+                    //  instanciando a tag para conseguir mandar as informaçoes da tag para o metodo
+                    tag = new Tag
+                    {
+                        Nome = item,            // nome da tag recebe a tag que o usuario mandar
+                        UserId = dto.UserId,    // puxo o usuario de dentro da dto
+                    };
                     
+                    // adicionando no context a tag criada e salvando
+                    _context.Add(tag);
+                    _context.SaveChanges();
+
                 }
 
                 IdTags.Add(tag.TagId);
             }
-            Nota nota = new Nota
+
+            //  instanciando um objeto do tipo nota, para receber da DTO e converter para o tipo nota
+            var novaNota = new Nota
             {
+                // recebendo informacoes da dto para a nota
                 Titulo = dto.Titulo,
                 Texto = dto.Texto,
-                DataAlteracao = dto.DataAlteracao,
-                DataCriacao = dto.DataCriacao,
-                Arquivado = dto.Arquivado,
+                DataAlteracao = DateTime.Now,
+                DataCriacao = DateTime.Now,
+                Arquivado = false,
                 Imagem = dto.Imagem,
                 UserId = dto.UserId
             };
 
-            
-            return null;
-
-            _context.Notas.Add(nota);
+            // adicionando a nota no context e salvando
+            _context.Notas.Add(novaNota);
 
             _context.SaveChanges();
 
-            
+            foreach (var id in IdTags)
+            {
+                var tagNota = new TagNota 
+                {
+                    NotaId = novaNota.NotaId,
+                    TagId = id
+                };
+                
+            }
 
-            //for (int i = 0; i < 1; i++)
-            //{
-            //    var tagnota = new TagNota 
-            //    {
-            //        NotaId = nota.NotaId,
-            //        TagId = 
-            //    };
-            //}
+            return dto;
         }
 
         public void Deletar(int id)

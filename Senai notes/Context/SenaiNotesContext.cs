@@ -1,7 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Senai_notes.Models;
 
 namespace Senai_notes.Context;
@@ -12,9 +12,11 @@ public partial class SenaiNotesContext : DbContext
     {
     }
 
-    public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options)
+    private IConfiguration _configuration;
+    public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options, IConfiguration config)
         : base(options)
     {
+            _configuration = config;
     }
 
     public virtual DbSet<AuditoriaGeral> AuditoriaGerals { get; set; }
@@ -28,8 +30,10 @@ public partial class SenaiNotesContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:senainotesdatabase.database.windows.net,1433;Initial Catalog=SenaiNotes;Persist Security Info=False;User ID=BackEndDev;Password=1234Back;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+    {
+        var con = _configuration.GetConnectionString("DefaultConnection");
+        optionsBuilder.UseSqlServer(con);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -56,13 +60,16 @@ public partial class SenaiNotesContext : DbContext
         {
             entity.HasKey(e => e.NotaId).HasName("PK__Notas__EF36CC7AFEB90979");
 
+            entity.ToTable(tb => tb.HasTrigger("trg_Audit_Notas"));
+
+            entity.HasIndex(e => e.UserId, "idx_UserNotas");
+
             entity.Property(e => e.NotaId).HasColumnName("NotaID");
             entity.Property(e => e.DataAlteracao).HasColumnType("datetime");
             entity.Property(e => e.DataCriacao).HasColumnType("datetime");
             entity.Property(e => e.Imagem)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            entity.Property(e => e.Texto).HasColumnType("text");
             entity.Property(e => e.Titulo)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -77,6 +84,8 @@ public partial class SenaiNotesContext : DbContext
         modelBuilder.Entity<Tag>(entity =>
         {
             entity.HasKey(e => e.TagId).HasName("PK__Tags__657CFA4CCDE2558A");
+
+            entity.ToTable(tb => tb.HasTrigger("trg_Audit_Tags"));
 
             entity.Property(e => e.TagId).HasColumnName("TagID");
             entity.Property(e => e.Nome)
@@ -110,6 +119,8 @@ public partial class SenaiNotesContext : DbContext
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Usuarios__1788CCAC3C77FAB3");
+
+            entity.ToTable(tb => tb.HasTrigger("trg_Audit_User"));
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.DataCriacao).HasColumnType("datetime");

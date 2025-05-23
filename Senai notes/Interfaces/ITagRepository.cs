@@ -5,7 +5,7 @@ namespace Senai_notes.Interfaces
 {
     public interface ITagRepository
     {
-        List<TagDto> ListarTodos();
+        List<TagViewModel> ListarTodos();
 
         List<TagDto> ListarTagsDoUsuario(int id);
 

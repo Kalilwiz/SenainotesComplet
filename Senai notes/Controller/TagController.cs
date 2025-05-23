@@ -24,7 +24,7 @@ namespace Senai_notes.Controller
 
             var tag = _tagRepository.ListarTodos();
             return Ok(tag);
-        }
+        }   
 
         [HttpPost]
 

@@ -29,7 +29,6 @@ namespace Senai_notes.Repositories
             usuarioEncontrado.Nome = usuario.Nome;
             usuarioEncontrado.Email = usuario.Email;
             usuarioEncontrado.Senha = usuario.Senha;
-            usuarioEncontrado.DataCriacao = usuario.DataCriacao;
 
             _context.SaveChanges();
 
@@ -68,7 +67,7 @@ namespace Senai_notes.Repositories
                 Nome = dto.Nome,
                 Email = dto.Email,
                 Senha = dto.Senha,
-                DataCriacao = dto.DataCriacao,
+                DataCriacao = DateTime.Now,
             };
 
             var passowrodService = new PasswordService();

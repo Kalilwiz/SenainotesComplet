@@ -40,7 +40,7 @@ builder.Services.AddCors(
             policy => 
             {
                 // usando metodo withOrigins para definir o link do site do front
-                policy.WithOrigins("http://localhost:5500");
+                policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173");
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
             }

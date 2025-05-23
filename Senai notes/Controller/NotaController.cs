@@ -29,7 +29,7 @@ namespace Senai_notes.Controller
         [HttpGet("{id}")]
 
        
-        public IActionResult ListarUsuarios(int id)
+        public IActionResult ListarNotas(int id)
         {
             List<Notaviewmodel> nota = _notaRepository.ListarTodasAsNotasPorUsuario(id);
 

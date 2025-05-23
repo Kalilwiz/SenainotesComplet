@@ -57,12 +57,13 @@ namespace Senai_notes.Repositories
             _context.SaveChanges();
         }
 
-        public List<TagDto> ListarTodos()
+        public List<TagViewModel> ListarTodos()
         {
-            return _context.Tags.Include(t => t.TagNota).Select(t => new TagDto 
+            return _context.Tags.Include(t => t.TagNota).Select(t => new TagViewModel 
             { 
                 TagId = t.TagId,
-                Nome = t.Nome
+                Nome = t.Nome,
+                UserId = t.UserId
 
             }).ToList();
         }
