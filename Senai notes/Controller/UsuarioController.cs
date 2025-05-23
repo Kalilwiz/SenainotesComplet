@@ -4,6 +4,7 @@ using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
 using Senai_notes.Models;
 using Senai_notes.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Senai_notes.Controller
 {
@@ -19,6 +20,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Listar usuários.",
+            Description = "Método para listar todos os usuário."
+            )]
 
         // criando o metodo listar usando o metodo iactionresult para trazer seu resultado e o codigo para retornar ao navegador
         public IActionResult ListarUsuarios()
@@ -28,6 +33,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpPost("login")]
+        [SwaggerOperation(
+            Summary = "Login.",
+            Description = "Método para fazer login."
+            )]
 
         public IActionResult Login(LoginDto login)
         {
@@ -47,6 +56,10 @@ namespace Senai_notes.Controller
 
         // metodo posto usado para Cadastrar seus usuarios
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Cadastrar usuário.",
+            Description = "Método para cadastrar usuário."
+            )]
 
         // criando o metodod cadastrar usuario usando ia result com o argumento usuario usando a dto usuariodto para cadastrar apenas o que eu quero
         public IActionResult CadastrarUsuario(UsuarioDto usuario)
@@ -58,6 +71,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Listar usuário por ID.",
+            Description = "Método para listar usuário por ID."
+            )]
 
         // criando o metodod listarporid com iactionresult com o argumento id
         public IActionResult ListarPorID(int id)
@@ -78,6 +95,10 @@ namespace Senai_notes.Controller
 
         // criando metodo put para atualizar algo criado usando um endpoint
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Alterar usuário.",
+            Description = "Método para alterar usuário."
+            )]
 
         // criando um metodo alterar com os argumetos id e produto do tipo usuario
         public IActionResult Alterar(int id, Usuario usuario)
@@ -98,6 +119,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Deletar usuário.",
+            Description = "Método para deletar usuário."
+            )]
 
         // criando metodo delete com o argumento id
         public IActionResult Delete(int id)

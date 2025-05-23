@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
 using Senai_notes.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Senai_notes.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class TagController : ControllerBase
     {
 
@@ -19,6 +23,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Listar tags.",
+            Description = "Método para listar todas as tags."
+            )]
         public IActionResult ListarTodos()
         {
 
@@ -27,6 +35,10 @@ namespace Senai_notes.Controller
         }   
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Cadastrar tag.",
+            Description = "Método para cadastrar tag."
+            )]
 
         public IActionResult CadastrarTag(TagDto tag)
         {
@@ -36,6 +48,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Editar tag.",
+            Description = "Método para editar tag."
+            )]
 
         public IActionResult Editar(int id, Tag tag)
         {
@@ -52,6 +68,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Deletar tag.",
+            Description = "Método para deletar tag."
+            )]
 
         public IActionResult Delete(int id)
         {
@@ -68,6 +88,10 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Listar tag por ID.",
+            Description = "Método para listar tag por ID."
+            )]
 
         public IActionResult ListarPorId(int id)
         {

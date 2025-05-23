@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
@@ -9,6 +10,7 @@ namespace Senai_notes.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotaController : ControllerBase
     {
         private INotaRepository _notaRepository;
@@ -19,6 +21,10 @@ namespace Senai_notes.Controller
         }
         
         [HttpPatch("{id}")]
+        [SwaggerOperation(
+            Summary = "Arquivar nota.",
+            Description = "Método para arquivar nota."
+            )]
 
         public IActionResult ArquivarNota(int id)
         {
@@ -27,8 +33,12 @@ namespace Senai_notes.Controller
 
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Listar nota por usuário.",
+            Description = "Método para listar notas por usuário."
+            )]
 
-       
+
         public IActionResult ListarNotas(int id)
         {
             List<Notaviewmodel> nota = _notaRepository.ListarTodasAsNotasPorUsuario(id);
@@ -42,8 +52,12 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Listar notas.",
+            Description = "Método para listar todas as notas."
+            )]
 
-        
+
         public IActionResult ListarTodos()
         {
             
@@ -53,8 +67,8 @@ namespace Senai_notes.Controller
 
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Cadastrar notas",
-            Description = "Metodo para cadastrar notas"
+            Summary = "Cadastrar nota.",
+            Description = "Método para cadastrar nota."
             )]
 
         
@@ -68,8 +82,12 @@ namespace Senai_notes.Controller
        
         
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Alterar nota.",
+            Description = "Método para alterar nota."
+            )]
 
-        
+
         public IActionResult Alterar(int id, NotaDto nota)
         {
             
@@ -87,8 +105,12 @@ namespace Senai_notes.Controller
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Deletar nota.",
+            Description = "Método para deletar nota."
+            )]
 
-        
+
         public IActionResult Delete(int id)
         {
 
