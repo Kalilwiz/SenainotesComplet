@@ -89,8 +89,8 @@ namespace Senai_notes.Controller
 
         [HttpGet("{id}")]
         [SwaggerOperation(
-            Summary = "Listar tag por ID.",
-            Description = "Método para listar tag por ID."
+            Summary = "Listar tag por usuário.",
+            Description = "Método para listar tag por usuário."
             )]
 
         public IActionResult ListarPorId(int id)
