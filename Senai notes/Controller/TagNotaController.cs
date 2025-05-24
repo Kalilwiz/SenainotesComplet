@@ -10,6 +10,7 @@ namespace Senai_notes.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TagNotaController : ControllerBase
     {
         private ITagNotaRepository _tagNotaRepository;

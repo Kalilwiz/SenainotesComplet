@@ -11,6 +11,7 @@ namespace Senai_notes.Controller
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+
     public class NotaController : ControllerBase
     {
         private INotaRepository _notaRepository;
@@ -29,6 +30,19 @@ namespace Senai_notes.Controller
         public IActionResult ArquivarNota(int id)
         {
             return Ok(_notaRepository.ArquivarNota(id));
+        }
+
+
+        [HttpGet("buscar/{text}")]
+        [SwaggerOperation(
+            summary:"Buscar nota por titulo, tag, conteudo",
+            description:"Tras uma lista de notas que corresponderem ao texto digitado tanto por titulo, tag ou conteudo"
+            )]
+            
+
+        public IActionResult BuscarNotaPorTitulo(string text)
+        {
+            return Ok(_notaRepository.BuscarNotaPorTitulo(text));
         }
 
 
@@ -88,7 +102,7 @@ namespace Senai_notes.Controller
             )]
 
 
-        public IActionResult Alterar(int id, NotaDto nota)
+        public IActionResult Alterar(int id, AlterarNotaDTO nota)
         {
             
             try

@@ -36,7 +36,7 @@ namespace Senai_notes.Repositories
             return nota;
         }
 
-        public void Atualizar(int id, NotaDto nota)
+        public void Atualizar(int id, AlterarNotaDTO nota)
         {
             Nota NotaEncontrada = _context.Notas.Find(id);
 
@@ -54,10 +54,26 @@ namespace Senai_notes.Repositories
 
         }
 
-        public List<Notaviewmodel> BuscarNotaPorTitulo()
+        public List<Notaviewmodel> BuscarNotaPorTitulo(string text)
         {
-            throw new NotImplementedException();
+            
+            return _context.Notas.Include(t => t.TagNota).ThenInclude(ta => ta.Tag).Where(p => p.Titulo == text || p.Texto == text || p.TagNota.Any(tn => tn.Tag.Nome == text )).Select(t => new Notaviewmodel
+            {
+                NotaId = t.NotaId,
+                Titulo = t.Titulo,
+                Texto = t.Texto,
+                DataCriacao = t.DataCriacao,
+                DataAlteracao = t.DataAlteracao,
+                Arquivado = t.Arquivado,
+                Imagem = t.Imagem,
+                tags = t.TagNota.Select(ta => new TagDto
+                {
+                    TagId = ta.Tag.TagId,
+                    Nome = ta.Tag.Nome
+                }).ToList(),
+            }).ToList();
         }
+        
 
         public NotaDto? Cadastrar(NotaDto dto)
         {
@@ -157,9 +173,9 @@ namespace Senai_notes.Repositories
             }).ToList();
         }
 
-        public List<Notaviewmodel> ListarTodos()
+        public List<ListarTodasNotasDTO> ListarTodos()
         {
-            return _context.Notas.Include(t => t.TagNota).ThenInclude(ta => ta.Tag).Select(t => new Notaviewmodel
+            return _context.Notas.Include(t => t.TagNota).ThenInclude(ta => ta.Tag).Select(t => new ListarTodasNotasDTO
             {
                 NotaId = t.NotaId,
                 Titulo = t.Titulo,
@@ -168,6 +184,7 @@ namespace Senai_notes.Repositories
                 DataAlteracao = t.DataAlteracao,
                 Arquivado = t.Arquivado,
                 Imagem = t.Imagem,
+                UserId = t.UserId,
                 tags = t.TagNota.Select(ta => new TagDto
                 {
                     TagId = ta.Tag.TagId,

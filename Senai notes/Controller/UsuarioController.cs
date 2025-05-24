@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Senai_notes.Dtos;
 using Senai_notes.Interfaces;
@@ -10,6 +11,7 @@ namespace Senai_notes.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class UsuarioController : ControllerBase
     {
         private IUsuarioRepository _usuarioRepository;
@@ -20,6 +22,7 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Listar usuários.",
             Description = "Método para listar todos os usuário."
@@ -51,7 +54,11 @@ namespace Senai_notes.Controller
 
             var token = tokenservice.GenerateToken(cliente.Email);
 
-            return Ok(token);
+            return Ok(new 
+            {
+                token,
+                cliente
+            });
         }
 
         // metodo posto usado para Cadastrar seus usuarios
@@ -71,6 +78,7 @@ namespace Senai_notes.Controller
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Listar usuário por ID.",
             Description = "Método para listar usuário por ID."
@@ -95,6 +103,7 @@ namespace Senai_notes.Controller
 
         // criando metodo put para atualizar algo criado usando um endpoint
         [HttpPut("{id}")]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Alterar usuário.",
             Description = "Método para alterar usuário."
@@ -119,6 +128,7 @@ namespace Senai_notes.Controller
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Deletar usuário.",
             Description = "Método para deletar usuário."
